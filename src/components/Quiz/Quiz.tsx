@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { resultInitialState } from "../../constants";
 import "./Quiz.scss";
-import AnswerTimer from "../AnswerTimer/AnswerTimer";
+// import AnswerTimer from "../AnswerTimer/AnswerTimer";
+import Result from "../Result/Result";
 
 const Quiz = ({ questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -106,22 +107,11 @@ const Quiz = ({ questions }) => {
           </div>
         </>
       ) : (
-        <div className='result'>
-          <h3>Result</h3>
-          <p>
-            Total Questions: <span>{questions.length}</span>
-          </p>
-          <p>
-            Total QuScoreestions: <span>{result.score}</span>
-          </p>
-          <p>
-            Correct Answers: <span>{result.correctAnswers}</span>
-          </p>
-          <p>
-            Wrong Answers: <span>{result.wrongAnswers}</span>
-          </p>
-          <button onClick={onTryAgain}>Try again</button>
-        </div>
+        <Result
+          result={result}
+          onTryAgain={onTryAgain}
+          totalQuestions={questions.length}
+        />
       )}
     </div>
   );
