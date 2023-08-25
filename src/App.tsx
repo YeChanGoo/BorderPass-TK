@@ -1,7 +1,10 @@
+import Quiz from "./Quiz";
+import { jsQuizz } from "./constants";
+
 function App() {
   return (
     <>
-      <div className='App'>Hello</div>
+      <Quiz questions={jsQuizz.questions} />
     </>
   );
 }
