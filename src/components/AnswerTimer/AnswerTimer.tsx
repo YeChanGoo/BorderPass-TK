@@ -39,9 +39,7 @@ function AnswerTimer({ duration, onTimeUp }) {
                 : "red"
             }`,
           }}
-          className='progress'>
-          {counter}
-        </div>
+          className='progress'></div>
       </div>
     </>
   );
