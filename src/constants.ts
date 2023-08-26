@@ -1,12 +1,14 @@
 export const jsQuizz = {
   questions: [
     {
+      id: "q1",
       question:
         "_____ provide a way to pass data from one component to antoher. Fill in the blank.",
       type: "FIB",
-      correctAnswer: "props",
+      // correctAnswer: "props",
     },
     {
+      id: "q2",
       question: "What is ReactJS?",
       choices: [
         "Server-side framework",
@@ -15,22 +17,25 @@ export const jsQuizz = {
         "None of the above",
       ],
       type: "MCQs",
-      correctAnswer: "User Interface framework",
+      // correctAnswer: "User Interface framework",
     },
     {
+      id: "q3",
       question:
         "Identify the one which is used to pass data to components from outside",
       choices: ["Render with arguments", "setState", "PropTypes", "props"],
       type: "MCQs",
-      correctAnswer: "props",
+      // correctAnswer: "props",
     },
     {
+      id: "q4",
       question: "In which language is React.js written?",
       choices: ["Python", "Java", "C#", "JavaScript"],
       type: "MCQs",
-      correctAnswer: "JavaScript",
+      // correctAnswer: "JavaScript",
     },
     {
+      id: "q5",
       question: "What is Babel?",
       choices: [
         "JavaScript interpreter",
@@ -39,13 +44,9 @@ export const jsQuizz = {
         "None of the above",
       ],
       type: "MCQs",
-      correctAnswer: "JavaScript compiler",
+      // correctAnswer: "JavaScript compiler",
     },
   ],
 };
 
-export const resultInitialState = {
-  score: 0,
-  correctAnswers: 0,
-  wrongAnswers: 0,
-};
+export const resultInitialState = {};

@@ -7,6 +7,7 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
   const [showScores, setShowScores] = useState(false);
 
   useEffect(() => {
+    console.log("final result", result);
     setHighScores(JSON.parse(localStorage.getItem("highScores")) || []);
   }, []);
 
@@ -31,6 +32,7 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
   };
   return (
     <div className='result'>
+      {JSON.stringify(result)}
       <h3>Result</h3>
       <p>
         Total Questions: <span>{totalQuestions}</span>
