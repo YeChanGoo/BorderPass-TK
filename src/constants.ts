@@ -2,8 +2,7 @@ export const jsQuizz = {
   questions: [
     {
       id: "q1",
-      question:
-        "_____ provide a way to pass data from one component to antoher. Fill in the blank.",
+      question: "Please enter your name",
       type: "FIB",
       required: "yes",
     },
@@ -52,7 +51,7 @@ export const jsQuizz = {
     },
     {
       id: "q7",
-      question: "Enter Adress",
+      question: "Enter Address",
       type: "FIB",
       required: "no",
     },

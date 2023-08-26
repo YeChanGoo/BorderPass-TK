@@ -1,91 +1,41 @@
-// import "./Result.scss";
-import { useState, useEffect } from "react";
+import { Button, Typography, Box, Divider } from "@mui/material";
 
 const Result = ({ totalQuestions, result, onTryAgain }) => {
-  const [name, setName] = useState("");
-  const [highScores, setHighScores] = useState([]);
-  const [showScores, setShowScores] = useState(false);
-
-  useEffect(() => {
-    console.log("final result", result);
-    setHighScores(JSON.parse(localStorage.getItem("highScores")) || []);
-  }, []);
-
-  const handleSave = () => {
-    const score = {
-      name,
-      score: result.score,
-    };
-
-    const newHighScores = [...highScores, score].sort(
-      (a, b) => b.score - a.score
-    );
-    setHighScores(newHighScores);
-    setShowScores(true);
-    localStorage.setItem("highScores", JSON.stringify(newHighScores));
-  };
-
-  const handleTryAgain = () => {
-    setShowScores(false);
-    setHighScores([]);
-    onTryAgain();
-  };
   return (
-    <div className='result'>
-      {Object.keys(result).map((obj) => (
-        <div>{result[obj]}</div>
-      ))}
-      <h3>Result</h3>
-      <p>
-        Total Questions: <span>{totalQuestions}</span>
-      </p>
-      <p>
-        Total QuScoreestions: <span>{result.score}</span>
-      </p>
-      <p>
-        Correct Answers: <span>{result.correctAnswers}</span>
-      </p>
-      <p>
-        Wrong Answers: <span>{result.wrongAnswers}</span>
-      </p>
-      <button onClick={handleTryAgain}>Try again</button>
-      {/* {!showScores ? (
-        <>
-          <h3>
-            Enter your name below <br /> to save your score!
-          </h3>
-          <input
-            placeholder='Your Name'
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-          <button onClick={handleSave}>Save</button>
-        </>
-      ) : (
-        <>
-          <table>
-            <thead>
-              <tr>
-                <th>Ranking</th>
-                <th>Name</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {highScores.map((highScore, i) => {
-                return (
-                  <tr key={`${highScores.score}${highScore.name}${i}`}>
-                    <td>{i + 1}</td>
-                    <td>{highScore.name}</td>
-                    <td>{highScore.score}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </>
-      )} */}
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 3,
+        border: "1px solid",
+        borderColor: "divider",
+        width: ["90%", "80%", "70%", "60%"], // responsive widths based on breakpoints
+        maxWidth: "800px", // or any other value that suits your design
+        margin: "0 auto", // center the box
+      }}>
+      <Typography variant='h4' gutterBottom>
+        Result
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          width: "100%",
+          mb: 3,
+        }}>
+        {Object.values(result).map((res, index) => (
+          <Box key={index} sx={{ mb: 1 }}>
+            <Typography variant='body1'>{res}</Typography>
+          </Box>
+        ))}
+      </Box>
+      <Divider sx={{ mb: 2, width: "100%" }} />
+      <Button variant='contained' color='primary' onClick={onTryAgain}>
+        Try again
+      </Button>
+    </Box>
   );
 };
 
