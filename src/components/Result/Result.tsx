@@ -1,4 +1,4 @@
-import "./Result.scss";
+// import "./Result.scss";
 import { useState, useEffect } from "react";
 
 const Result = ({ totalQuestions, result, onTryAgain }) => {
@@ -49,7 +49,7 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
         Wrong Answers: <span>{result.wrongAnswers}</span>
       </p>
       <button onClick={handleTryAgain}>Try again</button>
-      {!showScores ? (
+      {/* {!showScores ? (
         <>
           <h3>
             Enter your name below <br /> to save your score!
@@ -84,7 +84,7 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
             </tbody>
           </table>
         </>
-      )}
+      )} */}
     </div>
   );
 };

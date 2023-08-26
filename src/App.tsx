@@ -1,6 +1,7 @@
 import Quiz from "./components/Quiz/Quiz";
 // import { useEffect, useState } from "react";
 import { jsQuizz } from "./constants";
+import { Container } from "@mui/material";
 
 function App() {
   // const [questions, setQuestions] = useState([]);
@@ -21,7 +22,11 @@ function App() {
   //   }
   // };
   // return <>{questions.length && <Quiz questions={questions} />}</>;
-  return <>{<Quiz questions={jsQuizz.questions} />}</>;
+  return (
+    <Container maxWidth='md'>
+      <Quiz questions={jsQuizz.questions} />
+    </Container>
+  );
 }
 
 export default App;
