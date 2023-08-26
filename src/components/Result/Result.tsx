@@ -32,7 +32,9 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
   };
   return (
     <div className='result'>
-      {JSON.stringify(result)}
+      {Object.keys(result).map((obj) => (
+        <div>{result[obj]}</div>
+      ))}
       <h3>Result</h3>
       <p>
         Total Questions: <span>{totalQuestions}</span>
