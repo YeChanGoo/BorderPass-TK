@@ -1,32 +1,53 @@
-import Quiz from "./components/Quiz/Quiz";
-// import { useEffect, useState } from "react";
-import { jsQuizz } from "./constants";
+import React from "react";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql,
+} from "@apollo/client";
 import { Container } from "@mui/material";
+import Quiz from "./components/Quiz/Quiz";
+
+const client = new ApolloClient({
+  uri: "http://localhost:4001",
+  cache: new InMemoryCache(),
+});
+
+const GET_QUIZ = gql`
+  query GetQuiz {
+    jsQuizz {
+      questions {
+        id
+        question
+        choices
+        type
+        maxSelection
+        required
+      }
+    }
+  }
+`;
 
 function App() {
-  // const [questions, setQuestions] = useState([]);
-  // useEffect(() => {
-  //   getQuestions();
-  // }, []);
+  const { loading, error, data } = useQuery(GET_QUIZ);
 
-  // const getQuestions = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://644982a3e7eb3378ca4ba471.mockapi.io/questions"
-  //     );
-  //     const questionResponse = await response.json();
-  //     console.log(questionResponse);
-  //     setQuestions(questionResponse);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // return <>{questions.length && <Quiz questions={questions} />}</>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <Container maxWidth='md'>
-      <Quiz questions={jsQuizz.questions} />
+      <Quiz questions={data.jsQuizz.questions} />
     </Container>
   );
 }
 
-export default App;
+function Root() {
+  return (
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  );
+}
+
+export default Root;

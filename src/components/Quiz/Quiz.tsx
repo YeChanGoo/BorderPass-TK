@@ -74,6 +74,7 @@ const Quiz = ({ questions }) => {
               answerIdx={answerIdx}
               onAnswerClick={onAnswerClick}
               selectedIndices={selectedIndices}
+              maxSelection={questions[currentQuestionIndex].maxSelection}
             />
           </Box>
         );
