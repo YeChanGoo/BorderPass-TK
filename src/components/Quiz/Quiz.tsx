@@ -1,162 +1,84 @@
-import { useState } from "react";
-import { resultInitialState } from "../../constants";
 import Result from "../Result/Result";
-import {
-  TextField,
-  Autocomplete,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  Typography,
-  Grid,
-  Box,
-} from "@mui/material";
+import { Button, Typography, Grid, Box } from "@mui/material";
+import FillInTheBlank from "../QuestionUIComponents/FillInTheBlank/FillInTheBlank";
+import DropdownQuestion from "../QuestionUIComponents/DropDownQuestion/DropDownQuestion";
+import ChoiceQuestions from "../QuestionUIComponents/ChoiceQuestions/ChoiceQuestions";
+import { useQuiz } from "../../hooks/hooks";
 
 const Quiz = ({ questions }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answerIdx, setanswerIdx] = useState(null);
-  const [result, setResult] = useState(resultInitialState);
-  const [showResult, setShowResult] = useState(false);
-  const [inputAnswer, setInputAnswer] = useState("");
-  const { id, question, choices, type } = questions[currentQuestionIndex];
-  const [dropdownSelection, setDropdownSelection] = useState(null);
-  // multiple checkboxes for MCQs
-  const [selectedIndices, setSelectedIndices] = useState([]);
+  const {
+    currentQuestionIndex,
+    answerIdx,
+    result,
+    showResult,
+    inputAnswer,
+    setDropdownSelection,
+    selectedIndices,
+    onAnswerClick,
+    handleNextClick,
+    handleBackClick,
+    onTryAgain,
+    handleInputChange,
+    isNextButtonDisabled,
+  } = useQuiz(questions);
 
-  const onAnswerClick = (index) => {
-    if (type === "MCQs") {
-      // Toggle the selected state of checkboxes for MCQs
-      if (selectedIndices.includes(index)) {
-        setSelectedIndices((prev) => prev.filter((idx) => idx !== index));
-      } else {
-        setSelectedIndices((prev) => [...prev, index]);
-      }
-    } else {
-      setanswerIdx(index);
-    }
-  };
+  const BackButton = ({ onClick, disabled }) => (
+    <Grid item xs={4}>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={onClick}
+        disabled={disabled}
+        fullWidth>
+        Back
+      </Button>
+    </Grid>
+  );
 
-  const handleNextClick = () => {
-    if (type === "FIB") {
-      console.log("prev FIB", inputAnswer);
-      setResult((prev) => ({ ...prev, [id]: inputAnswer }));
-    } else if (type === "SCQs") {
-      setResult((prev) => ({ ...prev, [id]: choices[answerIdx] }));
-    } else if (type === "MCQs") {
-      const selectedOptions = selectedIndices.map((index) => choices[index]);
-      setResult((prev) => ({ ...prev, [id]: selectedOptions }));
-    } else if (type === "Dropdown") {
-      setResult((prev) => ({ ...prev, [id]: dropdownSelection.label }));
-    }
-    setanswerIdx(null);
-    setSelectedIndices([]);
-    setInputAnswer("");
-    setDropdownSelection(null);
+  const NextButton = ({ onClick, disabled, isLastQuestion }) => (
+    <Grid item xs={4}>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={onClick}
+        disabled={disabled}
+        fullWidth>
+        {isLastQuestion ? "Finish" : "Next"}
+      </Button>
+    </Grid>
+  );
 
-    if (currentQuestionIndex !== questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
-    } else {
-      setCurrentQuestionIndex(0);
-      setShowResult(true);
-    }
-  };
-
-  const handleBackClick = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prev) => prev - 1);
-    }
-
-    // Reset states if needed, for instance:
-    setanswerIdx(null);
-    setInputAnswer("");
-    setDropdownSelection(null);
-  };
-
-  const onTryAgain = () => {
-    setResult(resultInitialState);
-    setShowResult(false);
-  };
-
-  const handleInputChange = (event) => {
-    setInputAnswer(event.target.value);
-  };
-
-  const isNextButtonDisabled = () => {
-    const questionDetails = questions[currentQuestionIndex];
-    const isRequired = questionDetails.required === "yes";
-
-    if (!isRequired) return false;
-
-    if (type === "FIB") {
-      return !inputAnswer;
-    } else if (type === "Dropdown") {
-      return !dropdownSelection;
-    } else if (type === "SCQs") {
-      return answerIdx === null;
-    } else if (type === "MCQs") {
-      const maxSelection = questions[currentQuestionIndex].maxSelection;
-      return selectedIndices.length < maxSelection;
-    }
-    return true; // default case to make the button disabled
-  };
-
-  const getQuestionUI = () => {
-    if (type === "FIB") {
-      return (
-        <Grid container justifyContent='center'>
-          <Grid item xs={12} md={8}>
-            <TextField
-              variant='outlined'
-              value={inputAnswer}
-              onChange={handleInputChange}
-              label='Your Answer'
-              fullWidth // This will ensure the TextField takes the full width of its container (the Grid item)
-              sx={{ marginTop: 3, marginBottom: 3 }} // You can adjust these values as needed
+  const renderQuestion = (type, question) => {
+    switch (type) {
+      case "FIB":
+        return (
+          <FillInTheBlank
+            inputAnswer={inputAnswer}
+            handleInputChange={handleInputChange}
+          />
+        );
+      case "Dropdown":
+        return (
+          <DropdownQuestion
+            choices={question.choices}
+            setDropdownSelection={setDropdownSelection}
+          />
+        );
+      case "MCQs":
+      case "SCQs":
+        return (
+          <Box component='ul' sx={{ listStyleType: "none", padding: 0 }}>
+            <ChoiceQuestions
+              type={type}
+              choices={question.choices}
+              answerIdx={answerIdx}
+              onAnswerClick={onAnswerClick}
+              selectedIndices={selectedIndices}
             />
-          </Grid>
-        </Grid>
-      );
-    } else if (type === "Dropdown") {
-      return (
-        <Autocomplete
-          disablePortal
-          id='dropdown-question'
-          options={choices.map((choice) => ({ label: choice }))}
-          sx={{ marginTop: 3, marginBottom: 3, width: 300 }}
-          onChange={(event, newValue) => setDropdownSelection(newValue)}
-          renderInput={(params) => (
-            <TextField {...params} label={question.question} />
-          )}
-        />
-      );
-    } else if (type === "MCQs" || type === "SCQs") {
-      const maxSelection = questions[currentQuestionIndex].maxSelection || 1;
-      return (
-        <Box component='ul' sx={{ listStyleType: "none", padding: 0 }}>
-          {choices.map((options, index) => (
-            <li key={options}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={
-                      type === "MCQs"
-                        ? selectedIndices.includes(index)
-                        : answerIdx === index
-                    }
-                    onChange={() => onAnswerClick(index)}
-                    disabled={
-                      type === "MCQs" &&
-                      !selectedIndices.includes(index) &&
-                      selectedIndices.length >= maxSelection
-                    }
-                  />
-                }
-                label={options}
-              />
-            </li>
-          ))}
-        </Box>
-      );
+          </Box>
+        );
+      default:
+        return null;
     }
   };
 
@@ -176,7 +98,7 @@ const Quiz = ({ questions }) => {
       {!showResult ? (
         <>
           <Typography variant='h4' gutterBottom align='center'>
-            {question}
+            {questions[currentQuestionIndex].question}
           </Typography>
           <Box
             sx={{
@@ -186,7 +108,10 @@ const Quiz = ({ questions }) => {
               width: "100%",
               mb: 3,
             }}>
-            {getQuestionUI()}
+            {renderQuestion(
+              questions[currentQuestionIndex].type,
+              questions[currentQuestionIndex]
+            )}
           </Box>
           <Box
             sx={{
@@ -197,28 +122,15 @@ const Quiz = ({ questions }) => {
               mb: 2,
             }}>
             <Grid container justifyContent='space-between' spacing={2}>
-              <Grid item xs={4}>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={() => handleBackClick()}
-                  disabled={currentQuestionIndex === 0}
-                  fullWidth>
-                  Back
-                </Button>
-              </Grid>
-              <Grid item xs={4}>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={() => handleNextClick()}
-                  disabled={isNextButtonDisabled()}
-                  fullWidth>
-                  {currentQuestionIndex === questions.length - 1
-                    ? "Finish"
-                    : "Next"}
-                </Button>
-              </Grid>
+              <BackButton
+                onClick={handleBackClick}
+                disabled={currentQuestionIndex === 0}
+              />
+              <NextButton
+                onClick={handleNextClick}
+                disabled={isNextButtonDisabled()}
+                isLastQuestion={currentQuestionIndex === questions.length - 1}
+              />
             </Grid>
           </Box>
         </>
