@@ -20,7 +20,7 @@ The Quiz App is a web application that allows users to take a quiz by answering 
 
 - Present various types of quiz questions: multiple-choice, single-choice, fill-in-the-blank, and dropdown.
 - Users can navigate between questions, go back, and submit answers.
-- Results are displayed, indicating correct and incorrect answers.
+- Results are displayed at the end of questionnaire.
 - Quiz results can be submitted and stored on the server.
 
 ## Getting Started
