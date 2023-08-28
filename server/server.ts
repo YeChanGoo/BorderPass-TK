@@ -3,11 +3,9 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { jsQuizz } from "../src/constants";
 import { QuizResultInput, Resolvers } from "./types/serverTypes";
 
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-
+// Define the schema using GraphQL type definitions (typeDefs)
 const typeDefs = `
+
   type Question {
     id: ID!
     question: String!
@@ -39,20 +37,21 @@ const typeDefs = `
     questionId: ID!
     answer: [String!]!
 }
-  
+
   type SubmissionResponse {
     success: Boolean!
     message: String
   }
 `;
-// Create an array to store quiz results
-// Note: This is just for demonstration. In a real-world application, you'd use a database.
+
+// Create an array to store quiz results (temporary)
 const storedResults: QuizResultInput[] = [];
 
+// Define the resolver functions to handle GraphQL queries and mutations
 const resolvers: Resolvers = {
   Query: {
-    jsQuizz: () => jsQuizz,
-    fetchQuizResults: () => storedResults,
+    jsQuizz: () => jsQuizz, // Return the predefined quiz data
+    fetchQuizResults: () => storedResults, // Return stored quiz results
   },
 
   Mutation: {
@@ -60,6 +59,7 @@ const resolvers: Resolvers = {
       // Save the results to our "storedResults" array
       storedResults.push(...args.results);
 
+      // Return a response indicating success and a message
       return {
         success: true,
         message: "Results submitted successfully!",
@@ -67,14 +67,14 @@ const resolvers: Resolvers = {
     },
   },
 };
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
+
+// Create an instance of ApolloServer with the defined schema and resolvers
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
+// Create an instance of ApolloServer with the defined schema and resolvers
 //  1. creates an Express app
 //  2. installs your ApolloServer instance as middleware
 //  3. prepares your app to handle incoming requests
@@ -85,6 +85,5 @@ async function startServer() {
   console.log(`🚀 Server listening at: ${url}`);
 }
 
+// Start the server
 startServer();
-
-console.log(`🚀 Server listening at: `);

@@ -1,6 +1,7 @@
 import { TextField, Grid } from "@mui/material";
 import { FillInTheBlankProps } from "../../../types/types";
 
+// Renders text input field for users
 const FillInTheBlank: React.FC<FillInTheBlankProps> = ({
   inputAnswer,
   handleInputChange,

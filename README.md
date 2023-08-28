@@ -1,27 +1,88 @@
-# React + TypeScript + Vite
+# Quiz App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple questionnaire app built using React, Apollo Client, and Apollo Server. Users can take a quiz, answer questions, and submit their quiz results.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Description](#description)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Technologies](#technologies)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Expanding the ESLint configuration
+## Description
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The Quiz App is a web application that allows users to take a quiz by answering multiple-choice questions, single-choice questions, fill-in-the-blank questions, and dropdown questions. The application features both client and server components to handle quiz presentation, user interactions, and result submissions.
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+- Present various types of quiz questions: multiple-choice, single-choice, fill-in-the-blank, and dropdown.
+- Users can navigate between questions, go back, and submit answers.
+- Results are displayed, indicating correct and incorrect answers.
+- Quiz results can be submitted and stored on the server.
+
+## Getting Started
+
+1. Clone the repository:
+
+```sh
+git clone https://github.com/YeChanGoo/BorderPass-TK.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Navigate to the project directory:
+
+```sh
+cd BorderPass-TK
+```
+
+3. Install dependencies:
+
+```sh
+npm install
+```
+
+4. Run the app:
+
+```sh
+npm run dev
+npm run server
+```
+
+## Usage
+
+Access the application in your web browser at http://localhost:5173.
+
+Take the quiz and answer the questions provided.
+
+After completing the quiz, submit your answers to view the results.
+
+## Technologies
+
+**Client:**
+
+- React: Front-end library for building user interfaces.
+- Material-UI: UI component library for styling the application.
+- Apollo Client: GraphQL client for managing data interactions with the server.
+- Vite: Fast development build tool.
+
+**Server:**
+
+- Apollo Server: GraphQL server for handling quiz data and results.
+- TypeScript: Programming language for type-safe development.
+- Jest: Testing framework for unit and integration testing.
+
+## Server
+
+- Apollo Server: GraphQL server for handling quiz data and results.
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute, please follow these steps:
+
+Fork the repository.
+Create a new branch for your feature/bugfix.
+Make your changes and commit them.
+Push your changes to your forked repository.
+Create a pull request to the main branch of the original repository.

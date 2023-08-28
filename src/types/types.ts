@@ -5,16 +5,14 @@ export interface Questions {
   question: string;
   type: "FIB" | "SCQs" | "MCQs" | "Dropdown";
   required: "yes" | "no";
-  choices?: string[]; // Optional because not all questions have choices
-  maxSelection?: number; // Optional, only for type MCQs
+  choices?: string[];
+  maxSelection?: number;
 }
 
-// Defining the shape of the Quiz
 export interface QuizProps {
   questions: Questions[];
 }
 
-// Additional types for the GraphQL response and errors
 export interface QuizData {
   jsQuizz: QuizProps;
 }
@@ -58,7 +56,7 @@ export interface NextButtonProps extends BackButtonProps {
 
 export type ResultProps = {
   result: ResultType;
-  onTryAgain: () => void; // type this based on actual usage
+  onTryAgain: () => void;
   questions: Questions[];
 };
 
@@ -86,7 +84,7 @@ export interface ChoiceQuestionProps {
   type: "MCQs" | "SCQs";
   choices: string[] | undefined;
   onAnswerClick: (index: number) => void;
-  answerIdx?: number | null; // Might be optional based on your implementation
+  answerIdx?: number | null;
   selectedIndices: number[];
-  maxSelection?: number; // Optional since not always used
+  maxSelection?: number;
 }

@@ -1,20 +1,11 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
+import { ApolloProvider, useQuery, gql } from "@apollo/client";
 import { Container, CircularProgress, Typography, Box } from "@mui/material";
 import Quiz from "./components/Quiz/Quiz";
 import { QuizData } from "../src/types/types";
+import client from "./apollo.Client";
 
-const client = new ApolloClient({
-  uri: "http://localhost:4001",
-  cache: new InMemoryCache(),
-});
-
-const GET_QUIZ = gql`
+// GraphQL query
+export const GET_QUIZ = gql`
   query GetQuiz {
     jsQuizz {
       questions {
@@ -29,9 +20,12 @@ const GET_QUIZ = gql`
   }
 `;
 
-function App() {
+// Main App
+export function App() {
+  // Apollo useQuery hook to fetch the quiz data from the server
   const { loading, error, data } = useQuery<QuizData>(GET_QUIZ);
 
+  // If data is loading, show a circular spinner
   if (loading)
     return (
       <Box
@@ -44,6 +38,8 @@ function App() {
         <CircularProgress />
       </Box>
     );
+
+  // If there's an error, show error message
   if (error)
     return (
       <Typography variant='h6' color='error'>
@@ -51,6 +47,7 @@ function App() {
       </Typography>
     );
 
+  // Check if data is present. If not, show error message
   if (!data?.jsQuizz?.questions)
     return (
       <Typography variant='h6' color='error'>
@@ -58,6 +55,7 @@ function App() {
       </Typography>
     );
 
+  // If data is sccessfully loaded, render the Quiz component with questions
   return (
     <Container maxWidth='md'>
       <Quiz questions={data.jsQuizz.questions} />
@@ -65,6 +63,8 @@ function App() {
   );
 }
 
+// Root that wraps the App
+// Wrapping Apollo Client
 function Root() {
   return (
     <ApolloProvider client={client}>

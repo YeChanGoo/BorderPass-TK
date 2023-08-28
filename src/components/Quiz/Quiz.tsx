@@ -12,7 +12,9 @@ import {
 } from "../../types/types";
 import { ReactNode } from "react";
 
+// Displays quiz questions and handles input
 const Quiz: React.FC<QuizProps> = ({ questions }) => {
+  // Custom hook for state and logic
   const {
     currentQuestionIndex,
     answerIdx,
@@ -30,6 +32,7 @@ const Quiz: React.FC<QuizProps> = ({ questions }) => {
     isNextButtonDisabled,
   } = useQuiz(questions);
 
+  // Component for rendering "Back" button
   const BackButton: React.FC<BackButtonProps> = ({ onClick, disabled }) => (
     <Grid item xs={4}>
       <Button
@@ -43,6 +46,7 @@ const Quiz: React.FC<QuizProps> = ({ questions }) => {
     </Grid>
   );
 
+  // Component for rendering "Next" or "Finish" button
   const NextButton: React.FC<NextButtonProps> = ({
     onClick,
     disabled,
@@ -60,6 +64,7 @@ const Quiz: React.FC<QuizProps> = ({ questions }) => {
     </Grid>
   );
 
+  // Function to render different question types based on their type
   const renderQuestion = (type: string, question: Questions): ReactNode => {
     switch (type) {
       case "FIB":
@@ -96,62 +101,72 @@ const Quiz: React.FC<QuizProps> = ({ questions }) => {
     }
   };
 
+  // Render the quiz components and UI
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 3,
-        border: "1px solid",
-        borderColor: "divider",
-        width: ["90%", "80%", "70%", "60%"], // responsive widths based on breakpoints
-        maxWidth: "800px", // or any other value that suits your design
-        margin: "0 auto", // center the box
-      }}>
-      {!showResult ? (
-        <>
-          <Typography variant='h4' gutterBottom align='center'>
-            {questions[currentQuestionIndex].question}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-              mb: 3,
-            }}>
-            {renderQuestion(
-              questions[currentQuestionIndex].type,
-              questions[currentQuestionIndex]
-            )}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-              mb: 2,
-            }}>
-            <Grid container justifyContent='space-between' spacing={2}>
-              <BackButton
-                onClick={handleBackClick}
-                disabled={currentQuestionIndex === 0}
-              />
-              <NextButton
-                onClick={handleNextClick}
-                disabled={isNextButtonDisabled()}
-                isLastQuestion={currentQuestionIndex === questions.length - 1}
-              />
-            </Grid>
-          </Box>
-        </>
-      ) : (
-        <Result result={result} onTryAgain={onTryAgain} questions={questions} />
-      )}
-    </Box>
+    <div data-testid='quiz-component'>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          width: ["90%", "80%", "70%", "60%"],
+          maxWidth: "800px",
+          margin: "0 auto",
+        }}>
+        {!showResult ? (
+          <>
+            <Typography variant='h4' gutterBottom align='center'>
+              {questions[currentQuestionIndex].question}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+                mb: 3,
+              }}>
+              {/* Renders questions */}
+              {renderQuestion(
+                questions[currentQuestionIndex].type,
+                questions[currentQuestionIndex]
+              )}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+                mb: 2,
+              }}>
+              {/* "Back" button and "Next" button */}
+              <Grid container justifyContent='space-between' spacing={2}>
+                <BackButton
+                  onClick={handleBackClick}
+                  disabled={currentQuestionIndex === 0}
+                />
+                <NextButton
+                  onClick={handleNextClick}
+                  disabled={isNextButtonDisabled()}
+                  isLastQuestion={currentQuestionIndex === questions.length - 1}
+                />
+              </Grid>
+            </Box>
+          </>
+        ) : (
+          // Show quiz results if "showResult" is true
+          <Result
+            result={result}
+            onTryAgain={onTryAgain}
+            questions={questions}
+          />
+        )}
+      </Box>
+    </div>
   );
 };
 
