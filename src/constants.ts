@@ -1,6 +1,6 @@
-import { Quiz } from "./types/types";
+import { QuizProps } from "./types/types";
 
-export const jsQuizz: Quiz = {
+export const jsQuizz: QuizProps = {
   questions: [
     {
       id: "q1",
@@ -10,50 +10,70 @@ export const jsQuizz: Quiz = {
     },
     {
       id: "q2",
-      question: "What is ReactJS?",
+      question: "How often do you wear shoes?",
       choices: [
-        "Server-side framework",
-        "User Interface framework",
-        "both a and b",
-        "None of the above",
+        "Very Frequently",
+        "Frequently",
+        "Occasionally",
+        "Rarely",
+        "Never",
       ],
       type: "SCQs",
       required: "yes",
     },
     {
       id: "q3",
-      question:
-        "Identify the one which is used to pass data to components from outside",
-      choices: ["Render with arguments", "setState", "PropTypes", "props"],
+      question: "What is your favorite day of the week?",
+      choices: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
       type: "SCQs",
       required: "yes",
     },
     {
       id: "q4",
-      question: "In which language supports JavaScript? Choose 2",
-      choices: ["Python", "TypeScript", "C#", "JavaScript"],
+      question:
+        "Which countries speak Portuguese as an official language? Select 2",
+      choices: ["Brazil", "Mexico", "Peru", "Portugal"],
       type: "MCQs",
       maxSelection: 2,
       required: "yes",
     },
     {
       id: "q5",
-      question: "What is a sport? Choose 3",
-      choices: ["Baseball", "Tennis", "Reading", "Soccer"],
+      question: "What are your top 3 movies from this list? Select 3",
+      choices: [
+        "Inception",
+        "Terminator 2",
+        "John Wick",
+        "Toy Story",
+        "Back to the Future",
+      ],
       type: "MCQs",
       maxSelection: 3,
       required: "yes",
     },
     {
       id: "q6",
-      question: "Select one",
-      choices: ["Pizza", "Burger", "Ice Cream", "None of the above"],
+      question: "Select your favorite cake",
+      choices: [
+        "Chocolate Cake",
+        "Red Velvet Cake",
+        "Coconut Cake",
+        "None of the above",
+      ],
       type: "Dropdown",
       required: "yes",
     },
     {
       id: "q7",
-      question: "Enter Address (Optional)",
+      question: "Additional Comments (Optional)",
       type: "FIB",
       required: "no",
     },

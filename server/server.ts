@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { jsQuizz } from "../src/constants";
-import { QuizResultInput, Resolvers } from "./types/types";
+import { QuizResultInput, Resolvers } from "./types/serverTypes";
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against

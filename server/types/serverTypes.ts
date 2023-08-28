@@ -1,4 +1,4 @@
-import { Quiz } from "../../src/types/types";
+import { QuizProps } from "../../src/types/types";
 
 export interface QuizResultInput {
   questionId: string;
@@ -11,7 +11,7 @@ export interface SubmitQuizResultsArgs {
 
 export type Resolvers = {
   Query: {
-    jsQuizz: () => Quiz;
+    jsQuizz: () => QuizProps;
     fetchQuizResults: () => QuizResultInput[];
   };
   Mutation: {

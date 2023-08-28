@@ -1,17 +1,24 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
+import {
+  Questions,
+  DropdownSelection,
+  ResultType,
+  QuizHookResponse,
+} from "../types/types";
 
-export const useQuiz = (questions) => {
+export const useQuiz = (questions: Questions[]): QuizHookResponse => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answerIdx, setanswerIdx] = useState(null);
-  const [result, setResult] = useState({}); // Note: you might want to provide a better default state
+  const [answerIdx, setanswerIdx] = useState<number | null>(null);
+  const [result, setResult] = useState<ResultType>({}); // Note: you might want to provide a better default state
   const [showResult, setShowResult] = useState(false);
   const [inputAnswer, setInputAnswer] = useState("");
-  const [dropdownSelection, setDropdownSelection] = useState(null);
-  const [selectedIndices, setSelectedIndices] = useState([]);
-  const { id, question, choices, type } = questions[currentQuestionIndex];
+  const [dropdownSelection, setDropdownSelection] =
+    useState<DropdownSelection | null>(null);
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+  const { id, choices, type } = questions[currentQuestionIndex];
 
   // ... all your other logic and handlers from Quiz component ...
-  const onAnswerClick = (index) => {
+  const onAnswerClick = (index: number): void => {
     if (type === "MCQs") {
       // Toggle the selected state of checkboxes for MCQs
       if (selectedIndices.includes(index)) {
@@ -24,16 +31,15 @@ export const useQuiz = (questions) => {
     }
   };
 
-  const handleNextClick = () => {
+  const handleNextClick = (): void => {
     if (type === "FIB") {
-      console.log("prev FIB", inputAnswer);
       setResult((prev) => ({ ...prev, [id]: inputAnswer }));
-    } else if (type === "SCQs") {
+    } else if (type === "SCQs" && choices && answerIdx !== null) {
       setResult((prev) => ({ ...prev, [id]: choices[answerIdx] }));
-    } else if (type === "MCQs") {
+    } else if (type === "MCQs" && choices) {
       const selectedOptions = selectedIndices.map((index) => choices[index]);
       setResult((prev) => ({ ...prev, [id]: selectedOptions }));
-    } else if (type === "Dropdown") {
+    } else if (type === "Dropdown" && dropdownSelection) {
       setResult((prev) => ({ ...prev, [id]: dropdownSelection.label }));
     }
     setanswerIdx(null);
@@ -49,7 +55,7 @@ export const useQuiz = (questions) => {
     }
   };
 
-  const handleBackClick = () => {
+  const handleBackClick = (): void => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prev) => prev - 1);
     }
@@ -60,15 +66,15 @@ export const useQuiz = (questions) => {
     setDropdownSelection(null);
   };
 
-  const onTryAgain = () => {
+  const onTryAgain = (): void => {
     setShowResult(false);
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputAnswer(event.target.value);
   };
 
-  const isNextButtonDisabled = () => {
+  const isNextButtonDisabled = (): boolean => {
     const questionDetails = questions[currentQuestionIndex];
     const isRequired = questionDetails.required === "yes";
 
@@ -81,7 +87,7 @@ export const useQuiz = (questions) => {
     } else if (type === "SCQs") {
       return answerIdx === null;
     } else if (type === "MCQs") {
-      const maxSelection = questions[currentQuestionIndex].maxSelection;
+      const maxSelection = questions[currentQuestionIndex]?.maxSelection ?? 0;
       return selectedIndices.length < maxSelection;
     }
     return true; // default case to make the button disabled
@@ -93,7 +99,8 @@ export const useQuiz = (questions) => {
     result,
     showResult,
     inputAnswer,
-    setDropdownSelection, // <-- Add this
+    dropdownSelection, // <-- Add this line
+    setDropdownSelection,
     selectedIndices,
     onAnswerClick,
     handleNextClick,

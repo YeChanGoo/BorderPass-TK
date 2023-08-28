@@ -3,15 +3,23 @@ import { Button, Typography, Grid, Box } from "@mui/material";
 import FillInTheBlank from "../QuestionUIComponents/FillInTheBlank/FillInTheBlank";
 import DropdownQuestion from "../QuestionUIComponents/DropDownQuestion/DropDownQuestion";
 import ChoiceQuestions from "../QuestionUIComponents/ChoiceQuestions/ChoiceQuestions";
-import { useQuiz } from "../../hooks/hooks";
+import { useQuiz } from "../../hooks/Hooks";
+import {
+  Questions,
+  QuizProps,
+  BackButtonProps,
+  NextButtonProps,
+} from "../../types/types";
+import { ReactNode } from "react";
 
-const Quiz = ({ questions }) => {
+const Quiz: React.FC<QuizProps> = ({ questions }) => {
   const {
     currentQuestionIndex,
     answerIdx,
     result,
     showResult,
     inputAnswer,
+    dropdownSelection,
     setDropdownSelection,
     selectedIndices,
     onAnswerClick,
@@ -22,7 +30,7 @@ const Quiz = ({ questions }) => {
     isNextButtonDisabled,
   } = useQuiz(questions);
 
-  const BackButton = ({ onClick, disabled }) => (
+  const BackButton: React.FC<BackButtonProps> = ({ onClick, disabled }) => (
     <Grid item xs={4}>
       <Button
         variant='contained'
@@ -35,7 +43,11 @@ const Quiz = ({ questions }) => {
     </Grid>
   );
 
-  const NextButton = ({ onClick, disabled, isLastQuestion }) => (
+  const NextButton: React.FC<NextButtonProps> = ({
+    onClick,
+    disabled,
+    isLastQuestion,
+  }) => (
     <Grid item xs={4}>
       <Button
         variant='contained'
@@ -48,7 +60,7 @@ const Quiz = ({ questions }) => {
     </Grid>
   );
 
-  const renderQuestion = (type, question) => {
+  const renderQuestion = (type: string, question: Questions): ReactNode => {
     switch (type) {
       case "FIB":
         return (
@@ -61,6 +73,7 @@ const Quiz = ({ questions }) => {
         return (
           <DropdownQuestion
             choices={question.choices}
+            dropdownSelection={dropdownSelection}
             setDropdownSelection={setDropdownSelection}
           />
         );
@@ -136,11 +149,7 @@ const Quiz = ({ questions }) => {
           </Box>
         </>
       ) : (
-        <Result
-          result={result}
-          onTryAgain={onTryAgain}
-          totalQuestions={questions.length}
-        />
+        <Result result={result} onTryAgain={onTryAgain} questions={questions} />
       )}
     </Box>
   );

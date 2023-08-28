@@ -1,12 +1,13 @@
 import { Button, Typography, Box, Divider } from "@mui/material";
 import { SUBMIT_QUIZ_RESULTS } from "../../graphql/mutations";
 import { useMutation } from "@apollo/client";
+import { ResultProps, SubmitQuizResultsResponse } from "../../types/types";
 
-const Result = ({ totalQuestions, result, onTryAgain }) => {
-  const [submitQuizResults, { loading, error, data }] =
-    useMutation(SUBMIT_QUIZ_RESULTS);
+const Result: React.FC<ResultProps> = ({ result, onTryAgain, questions }) => {
+  const [submitQuizResults, { loading, error }] =
+    useMutation<SubmitQuizResultsResponse>(SUBMIT_QUIZ_RESULTS);
 
-  const handleSubmitResults = async () => {
+  const handleSubmitResults = async (): Promise<void> => {
     try {
       const transformedResults = Object.values(result).map((res, index) => ({
         questionId: index, // Or whatever ID represents the question
@@ -17,7 +18,7 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
         variables: { results: transformedResults },
       });
 
-      if (response.data.submitQuizResults.success) {
+      if (response.data?.submitQuizResults.success) {
         alert(response.data.submitQuizResults.message);
       } else {
         alert("Error submitting results!");
@@ -50,9 +51,20 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
           width: "100%",
           mb: 3,
         }}>
-        {Object.values(result).map((res, index) => (
-          <Box key={index} sx={{ mb: 1 }}>
-            <Typography variant='body1'>{res}</Typography>
+        {questions.map((question) => (
+          <Box key={question.id} sx={{ mb: 2 }}>
+            <Typography variant='h6' gutterBottom>
+              Question: {question.question}
+            </Typography>
+            <Typography
+              variant='body1'
+              sx={{ color: result[question.id] ? "green" : "red" }}>
+              Your Answer:{" "}
+              {Array.isArray(result[question.id])
+                ? (result[question.id] as string[])?.join(", ") // Join selected answers with commas and spaces
+                : result[question.id] || "Not answered"}{" "}
+              {/* Handle possible null */}
+            </Typography>
           </Box>
         ))}
       </Box>

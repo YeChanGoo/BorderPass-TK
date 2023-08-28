@@ -1,6 +1,10 @@
 import { TextField, Grid } from "@mui/material";
+import { FillInTheBlankProps } from "../../../types/types";
 
-const FillInTheBlank = ({ inputAnswer, handleInputChange }) => {
+const FillInTheBlank: React.FC<FillInTheBlankProps> = ({
+  inputAnswer,
+  handleInputChange,
+}) => {
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12} md={8}>

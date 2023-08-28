@@ -1,8 +1,10 @@
 import { Checkbox, Radio, FormControlLabel, Box } from "@mui/material";
+import { ChoiceQuestionProps } from "../../../types/types";
+import React from "react";
 
-const ChoiceQuestions = ({
+const ChoiceQuestions: React.FC<ChoiceQuestionProps> = ({
   type,
-  choices,
+  choices = [],
   onAnswerClick,
   answerIdx,
   selectedIndices,
@@ -21,7 +23,7 @@ const ChoiceQuestions = ({
                   disabled={
                     type === "MCQs" &&
                     !selectedIndices.includes(index) &&
-                    selectedIndices.length >= maxSelection
+                    selectedIndices.length >= (maxSelection ?? Infinity)
                   }
                 />
               ) : (
