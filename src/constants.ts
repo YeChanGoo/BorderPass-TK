@@ -1,4 +1,6 @@
-export const jsQuizz = {
+import { Quiz } from "./types/types";
+
+export const jsQuizz: Quiz = {
   questions: [
     {
       id: "q1",
@@ -51,7 +53,7 @@ export const jsQuizz = {
     },
     {
       id: "q7",
-      question: "Enter Address",
+      question: "Enter Address (Optional)",
       type: "FIB",
       required: "no",
     },

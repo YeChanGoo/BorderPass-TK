@@ -1,6 +1,31 @@
 import { Button, Typography, Box, Divider } from "@mui/material";
+import { SUBMIT_QUIZ_RESULTS } from "../../graphql/mutations";
+import { useMutation } from "@apollo/client";
 
 const Result = ({ totalQuestions, result, onTryAgain }) => {
+  const [submitQuizResults, { loading, error, data }] =
+    useMutation(SUBMIT_QUIZ_RESULTS);
+
+  const handleSubmitResults = async () => {
+    try {
+      const transformedResults = Object.values(result).map((res, index) => ({
+        questionId: index, // Or whatever ID represents the question
+        answer: res,
+      }));
+
+      const response = await submitQuizResults({
+        variables: { results: transformedResults },
+      });
+
+      if (response.data.submitQuizResults.success) {
+        alert(response.data.submitQuizResults.message);
+      } else {
+        alert("Error submitting results!");
+      }
+    } catch (err) {
+      console.error("Failed to submit results:", err);
+    }
+  };
   return (
     <Box
       sx={{
@@ -35,6 +60,18 @@ const Result = ({ totalQuestions, result, onTryAgain }) => {
       <Button variant='contained' color='primary' onClick={onTryAgain}>
         Try again
       </Button>
+      <Button
+        variant='contained'
+        color='secondary'
+        sx={{ mt: 2 }}
+        onClick={handleSubmitResults}
+        disabled={loading} // Disable the button while the mutation is in progress
+      >
+        Submit
+      </Button>
+      {error && (
+        <Typography color='error'>Error submitting results!</Typography>
+      )}
     </Box>
   );
 };
