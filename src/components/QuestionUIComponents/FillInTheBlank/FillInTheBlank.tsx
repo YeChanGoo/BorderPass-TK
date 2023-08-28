@@ -15,6 +15,7 @@ const FillInTheBlank: React.FC<FillInTheBlankProps> = ({
           label='Your Answer'
           fullWidth
           sx={{ marginTop: 3, marginBottom: 3 }}
+          data-testid='text-field'
         />
       </Grid>
     </Grid>
